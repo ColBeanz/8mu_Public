@@ -80,3 +80,6 @@ eagle.epf
 
 # Local Netlify folder
 .netlify
+
+# built files
+build/
