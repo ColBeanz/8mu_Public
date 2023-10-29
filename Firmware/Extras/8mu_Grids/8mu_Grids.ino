@@ -23,6 +23,8 @@
 #include "uMidi.h"
 #include "pattern_generator.h"
 
+using namespace grids;
+
 // Create Midi
 uMidi myMidi;
 
@@ -48,6 +50,10 @@ void setup() {
     pinMode (buttons[i], INPUT_PULLUP  );
   }
 
+  //pattern_generator.Init();
+  pattern_generator.set_clock_resolution(2);
+
+
 }
 
 int count = 0;
@@ -55,45 +61,50 @@ int bpm = 120;
 
 void loop() {
 
-  // Light LED
-  digitalWrite(leds[count], 1);
+  // // Light LED
+  // digitalWrite(leds[count], 1);
 
-  // Read Fader
-  int read = analogRead(faders[count]);
+  // // Read Fader
+  // int read = analogRead(faders[count]);
 
-  // Convert to note and send Midi
-  int note = map(read, 0, 1023, 81, 33);
+  // // Convert to note and send Midi
+  // int note = map(read, 0, 1023, 81, 33);
 
-  // Send midi note
-  myMidi.hardNoteOn(1, 36, 127);
+  // // Send midi note
+  // myMidi.hardNoteOn(1, 36, 127);
 
-  // Read buttons
-  // Low = button pressed
-  for (int i = 0; i < 6; i++) {
-    Serial.print(digitalRead(buttons[i]));
-    Serial.print (" ");
+  // // Read buttons
+  // // Low = button pressed
+  // for (int i = 0; i < 6; i++) {
+  //   Serial.print(digitalRead(buttons[i]));
+  //   Serial.print (" ");
+  // }
+
+  // // Map buttons to BPM
+  // if (!digitalRead(buttons[0])) bpm = 30;
+  // else if (!digitalRead(buttons[1])) bpm = 60;
+  // else if (!digitalRead(buttons[2])) bpm = 240;
+  // else if (!digitalRead(buttons[3])) bpm = 480;
+  // else bpm = 120;
+
+
+  // // Delay according to BPM
+  // delay(15000 / bpm);
+
+
+  // // End note
+  // myMidi.hardNoteOff(1, 36);
+
+  // // Turn off LED
+  // digitalWrite(leds[count], 0);
+
+  // // Increment and return to zero when necessary
+  // count++;
+  // if (count >= 8) count = 0;
+
+  for (uint8_t i = 0; i < kNumParts; i++)
+  {
+    
   }
-
-  // Map buttons to BPM
-  if (!digitalRead(buttons[0])) bpm = 30;
-  else if (!digitalRead(buttons[1])) bpm = 60;
-  else if (!digitalRead(buttons[2])) bpm = 240;
-  else if (!digitalRead(buttons[3])) bpm = 480;
-  else bpm = 120;
-
-
-  // Delay according to BPM
-  delay(15000 / bpm);
-
-
-  // End note
-  myMidi.hardNoteOff(1, 36);
-
-  // Turn off LED
-  digitalWrite(leds[count], 0);
-
-  // Increment and return to zero when necessary
-  count++;
-  if (count >= 8) count = 0;
 
 }

@@ -25,16 +25,16 @@
 
 namespace grids {
 
-static const char str_res_dummy[] = "dummy";
+static const uint8_t str_res_dummy[] = "dummy";
 
 
-const char* const string_table[] = {
+const uint8_t* string_table[] = {
   str_res_dummy,
 };
 
 
 
-const uint16_t* const lookup_table_table[] = {
+const uint16_t* lookup_table_table[] = {
 };
 
 const uint32_t lut_res_euclidean[] = {
@@ -235,7 +235,7 @@ const uint32_t lut_res_tempo_phase_increment[] = {
 };
 
 
-const uint32_t* const lookup_table32_table[] = {
+const uint32_t* lookup_table32_table[] = {
   lut_res_euclidean,
   lut_res_tempo_phase_increment,
 };
@@ -592,7 +592,7 @@ const uint8_t node_24[] = {
 };
 
 
-const uint8_t* const node_table[] = {
+const uint8_t* node_table[] = {
   node_0,
   node_1,
   node_2,

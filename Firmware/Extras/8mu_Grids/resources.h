@@ -20,25 +20,25 @@
 // Automatically generated with:
 // make resources
 
-
+#include <stdint.h>
 #ifndef GRIDS_RESOURCES_H_
 #define GRIDS_RESOURCES_H_
 
-//typedef unsigned char uint8_t;
-//typedef unsigned short uint16_t;
-//typedef unsigned int uint32_t;
+// typedef unsigned char uint8_t;
+// typedef unsigned short uint16_t;
+// typedef unsigned int uint32_t;
 
 namespace grids {
 
 typedef uint8_t ResourceId;
 
-extern const uint8_t* const string_table[];
+extern const uint8_t* string_table[];
 
-extern const uint16_t* const lookup_table_table[];
+extern const uint16_t* lookup_table_table[];
 
-extern const uint32_t* const lookup_table32_table[];
+extern const uint32_t* lookup_table32_table[];
 
-extern const uint32_t* const node_table[];
+extern const uint8_t* node_table[];
 
 extern const uint32_t lut_res_euclidean[];
 extern const uint32_t lut_res_tempo_phase_increment[];

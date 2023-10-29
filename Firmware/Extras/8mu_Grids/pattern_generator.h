@@ -29,6 +29,7 @@
 #include <string.h>
 #include "resources.h"
 #include "config.h"
+#include <iostream>
 
 namespace grids {
 
@@ -160,12 +161,13 @@ class PatternGenerator {
   static inline uint8_t step() { return step_; }
   
   static inline bool swing() { return options_.swing; }
-  static int8_t swing_amount();
+  static uint8_t swing_amount();
   static inline bool output_clock() { return options_.output_clock; }
   static inline bool tap_tempo() { return options_.tap_tempo; }
   static inline bool gate_mode() { return options_.gate_mode; }
   static inline OutputMode output_mode() { return options_.output_mode; }
   static inline ClockResolution clock_resolution() { return options_.clock_resolution; }
+  static inline uint8_t part_level(uint8_t part) { return part_levels_[part]; }
 
   static void set_swing(uint8_t value) { options_.swing = value; }  
   static void set_output_clock(uint8_t value) { options_.output_clock = value; }
@@ -246,6 +248,7 @@ class PatternGenerator {
   
   static uint8_t state_;
   static uint8_t part_perturbation_[kNumParts];
+  static uint8_t part_levels_[kNumParts];
 
   static uint8_t pulse_duration_counter_;
   
