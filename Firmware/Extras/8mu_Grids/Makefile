@@ -1,7 +1,7 @@
 .PHONY: build test run-test
 
 build:
-	g++ test.cpp pattern_generator.cpp resources.cpp avrlib/random.cc -o test
+	g++ test.cpp grids.cpp pattern_generator.cpp resources.cpp avrlib/random.cc -o test
 
 run-test:
 	./test

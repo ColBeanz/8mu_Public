@@ -21,7 +21,6 @@
 
 #include "avrlib/op.h"
 #include "avrlib/random.h"
-#include <iostream>
 
 using namespace avrlib;
 namespace grids {
@@ -93,6 +92,7 @@ uint8_t PatternGenerator::ReadDrumMap(
   return U8Mix(U8Mix(a, b, x << 2), U8Mix(c, d, x << 2), y << 2);
 }
 
+
 /* static */
 void PatternGenerator::EvaluateDrums() {
   // At the beginning of a pattern, decide on perturbation levels.
@@ -103,7 +103,7 @@ void PatternGenerator::EvaluateDrums() {
       part_perturbation_[i] = U8U8MulShift8(Random::GetByte(), randomness);
     }
   }
-  
+
   uint8_t instrument_mask = 1;
   uint8_t x = settings_.options.drums.x;
   uint8_t y = settings_.options.drums.y;
@@ -115,7 +115,7 @@ void PatternGenerator::EvaluateDrums() {
     } else {
       // The sequencer from Anushri uses a weird clipping rule here. Comment
       // this line to reproduce its behavior.
-      level = 255;
+      //level = 255;
     }
     uint8_t threshold = ~settings_.density[i];
     if (level > threshold) {
@@ -157,6 +157,7 @@ void PatternGenerator::EvaluateEuclidean() {
     uint32_t pattern_bits = lut_res_euclidean[address];
     if (pattern_bits & step_mask) {
       state_ |= instrument_mask;
+      part_levels_[i] = 255;
     }
     if (euclidean_step_[i] == 0) {
       reset_bits |= instrument_mask;
@@ -174,7 +175,8 @@ void PatternGenerator::EvaluateEuclidean() {
 
 /* static */
 void PatternGenerator::LoadSettings() {
-  uint8_t byte = 0x40; // OUTPUT_MODE_DRUMS
+  uint8_t byte = 0;
+  byte |= 0x40; // OUTPUT_MODE_DRUMS
   byte |= 0x02; // CLOCK_RESOLUTION_24_PPQN
   byte |= 0x20; // OUTPUT_CLOCK
   options_.unpack(byte);
@@ -199,14 +201,14 @@ void PatternGenerator::SaveSettings() {
 void PatternGenerator::Evaluate() {
   state_ = 0;
   pulse_duration_counter_ = 0;
+  part_levels_[0] = 0;
+  part_levels_[1] = 0;
+  part_levels_[2] = 0;
   
   Random::Update();
   // Highest bits: clock and random bit.
   state_ |= 0x40;
   state_ |= Random::state() & 0x80;
-
-  std::bitset<8> bits(state_);
-  std::cout << bits.to_string() + " ";
 
   if (output_clock()) {
     state_ |= OUTPUT_BIT_CLOCK;

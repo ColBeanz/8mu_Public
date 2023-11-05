@@ -29,12 +29,11 @@
 #include <string.h>
 #include "resources.h"
 #include "config.h"
-#include <iostream>
 
 namespace grids {
 
 const uint8_t kNumParts = 3;
-const uint8_t kPulsesPerStep = 3;  // 24 ppqn ; 8 steps per quarter note.
+const uint8_t kPulsesPerStep = 6;  // 24 ppqn ; 8 steps per quarter note.
 const uint8_t kStepsPerPattern = 32;
 const uint8_t kPulseDuration = 8;  // 8 ticks of the main clock.
 
@@ -148,7 +147,7 @@ class PatternGenerator {
       }
       ++step_;
     }
-    
+
     // Wrap into step sequence steps.
     if (step_ >= kStepsPerPattern) {
       step_ -= kStepsPerPattern;
