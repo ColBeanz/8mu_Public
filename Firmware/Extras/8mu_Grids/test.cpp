@@ -10,6 +10,7 @@ int main() {
     
     for (uint8_t i = 0; i < 192; i++) {
         grids_.NextStep();
+        grids_.trigger_midi();
     }
 
     return 0;

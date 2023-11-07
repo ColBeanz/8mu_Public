@@ -4,18 +4,15 @@
 #include "pattern_generator.h"
 //#include "uMidi.h"
 
+//uMidi myMidi;
+
 class Grids {
     public:
         static void Init();
         static void NextStep();
-        static inline uint8_t* mutable_int() {
-            return &x;
-        }
 
-    private:
-        //uMidi myMidi;
+    //private:
         static void trigger_midi();
-        static uint8_t x;
 };
 
 extern Grids grids_;
