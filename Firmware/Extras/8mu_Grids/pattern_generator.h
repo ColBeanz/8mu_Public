@@ -33,7 +33,7 @@
 namespace grids {
 
 const uint8_t kNumParts = 3;
-const uint8_t kPulsesPerStep = 6;  // 24 ppqn ; 8 steps per quarter note.
+const uint8_t kPulsesPerStep = 3;  // 24 ppqn ; 8 steps per quarter note.
 const uint8_t kStepsPerPattern = 32;
 const uint8_t kPulseDuration = 8;  // 8 ticks of the main clock.
 
@@ -140,11 +140,11 @@ class PatternGenerator {
     // Wrap into ppqn steps.
     while (pulse_ >= kPulsesPerStep) {
       pulse_ -= kPulsesPerStep;
-      if (!(step_ & 1)) {
+      //if (!(step_ & 1)) { 
         for (uint8_t i = 0; i < kNumParts; ++i) {
           ++euclidean_step_[i];
         }
-      }
+      //}
       ++step_;
     }
 

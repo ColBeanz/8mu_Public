@@ -3,20 +3,23 @@
 
 using namespace grids;
 
+/* extern */
+Grids grids_;
+
 void Grids::Init() {
     pattern_generator.Init();
     pattern_generator.set_clock_resolution(2);
 
     PatternGeneratorSettings* settings = pattern_generator.mutable_settings();
-    settings->options.drums.x = 0;
-    settings->options.drums.y = 0;
-    settings->options.drums.randomness = 0;
-    settings->density[0] = 255;
+    settings->options.drums.x = 64;
+    settings->options.drums.y = 32;
+    settings->options.drums.randomness = 64;
+    settings->density[0] = 127;
     settings->density[1] = 255;
-    settings->density[2] = 255;
-    settings->options.euclidean_length[0] = 8;
-    settings->options.euclidean_length[1] = 8;
-    settings->options.euclidean_length[2] = 4;
+    settings->density[2] = 127;
+    //settings->options.euclidean_length[0] = 65; // seems to be equivelent to x, y and randomness 
+    //settings->options.euclidean_length[1] = 255;
+    //settings->options.euclidean_length[2] = 16;
 }
 
 void Grids::NextStep() {

@@ -21,6 +21,7 @@
 
 #include "avrlib/op.h"
 #include "avrlib/random.h"
+#include "iostream"
 
 using namespace avrlib;
 namespace grids {
@@ -92,7 +93,6 @@ uint8_t PatternGenerator::ReadDrumMap(
   return U8Mix(U8Mix(a, b, x << 2), U8Mix(c, d, x << 2), y << 2);
 }
 
-
 /* static */
 void PatternGenerator::EvaluateDrums() {
   // At the beginning of a pattern, decide on perturbation levels.
@@ -107,6 +107,8 @@ void PatternGenerator::EvaluateDrums() {
   uint8_t instrument_mask = 1;
   uint8_t x = settings_.options.drums.x;
   uint8_t y = settings_.options.drums.y;
+  std::cout << "x=" << (int)x;
+  std::cout << "y=" << (int)y;
   uint8_t accent_bits = 0;
   for (uint8_t i = 0; i < kNumParts; ++i) {
     uint8_t level = ReadDrumMap(step_, i, x, y);
@@ -123,10 +125,10 @@ void PatternGenerator::EvaluateDrums() {
         accent_bits |= instrument_mask;
       }
       state_ |= instrument_mask;
+
+      part_levels_[i] = level;
     }
     instrument_mask <<= 1;
-
-    part_levels_[i] = level;
   }
   if (output_clock()) {
     state_ |= accent_bits ? OUTPUT_BIT_COMMON : 0;
@@ -140,9 +142,9 @@ void PatternGenerator::EvaluateDrums() {
 void PatternGenerator::EvaluateEuclidean() {
   // Refresh only on sixteenth notes.
   if (step_ & 1) {
-    return;
+    //return;
   }
-  
+
   // Euclidean pattern generation
   uint8_t instrument_mask = 1;
   uint8_t reset_bits = 0;
@@ -179,6 +181,7 @@ void PatternGenerator::LoadSettings() {
   byte |= 0x40; // OUTPUT_MODE_DRUMS
   byte |= 0x02; // CLOCK_RESOLUTION_24_PPQN
   byte |= 0x20; // OUTPUT_CLOCK
+  byte |= 0x08; // NOT SWING
   options_.unpack(byte);
   factory_testing_ = 0;
 

@@ -6,11 +6,10 @@
 using namespace grids;
 
 int main() {
-    Grids grids = Grids();
-    grids.Init();
+    grids_.Init();
     
     for (uint8_t i = 0; i < 192; i++) {
-        grids.NextStep();
+        grids_.NextStep();
     }
 
     return 0;
