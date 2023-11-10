@@ -83,3 +83,6 @@ eagle.epf
 
 # built files
 build/
+
+# vscode stuff
+.vscode
