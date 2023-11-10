@@ -21,7 +21,6 @@
 
 #include "avrlib/op.h"
 #include "avrlib/random.h"
-#include "iostream"
 
 using namespace avrlib;
 namespace grids {
@@ -107,8 +106,6 @@ void PatternGenerator::EvaluateDrums() {
   uint8_t instrument_mask = 1;
   uint8_t x = settings_.options.drums.x;
   uint8_t y = settings_.options.drums.y;
-  std::cout << "x=" << (int)x;
-  std::cout << "y=" << (int)y;
   uint8_t accent_bits = 0;
   for (uint8_t i = 0; i < kNumParts; ++i) {
     uint8_t level = ReadDrumMap(step_, i, x, y);

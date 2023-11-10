@@ -1,17 +1,16 @@
-#include "grids.h"
-#include <iostream>
-#include <string>
-#include <bitset>
+// #include "grids.h"
+// #include <iostream>
+// #include <string>
+// #include <bitset>
 
-using namespace grids;
+// using namespace grids;
 
-int main() {
-    grids_.Init();
+// int main() {
+//     grids_.Init();
     
-    for (uint8_t i = 0; i < 192; i++) {
-        grids_.NextStep();
-        grids_.trigger_midi();
-    }
+//     for (uint8_t i = 0; i < 192; i++) {
+//         grids_.NextStep();
+//     }
 
-    return 0;
-}
+//     return 0;
+// }

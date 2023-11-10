@@ -20,20 +20,25 @@
 
 */
 
-#include "uMidi.h"
-#include "pattern_generator.h"
+#include "grids.h"
 
 using namespace grids;
 
 // Create Midi
-uMidi myMidi;
+// uMidi myMidi;
+
 
 // Pin assignments for leds, buttons, faders 
-const byte leds[8] = {0, 44, 5, 7, 10, 11, 12, 13};// left to right
+//const byte leds[8] = {0, 44, 5, 7, 10, 11, 12, 13};// left to right
 const byte buttons[6] = {29, 30, 28, 2, 31, 3}; // A, B, C, D, Left, Right
 const byte faders[8] = {A0, A1, A2, A3, A4, A5, A10, A11}; // left to right
 
 int IMU_readings[6]; // variable to store accelerometer readings
+
+int count = 0;
+int bpm = 120;
+int msPerClock = 0;
+unsigned long time_now = 0;
 
 void setup() {
 
@@ -42,31 +47,29 @@ void setup() {
     pinMode(leds[i], OUTPUT);
   }
 
+  grids_.Init();
+
+  msPerClock = grids_.MsPerClock(bpm);
   // Start Midi
-  myMidi.begin();
+  //myMidi.begin();
 
   // Setup buttons as input pins
   for (int i = 0; i < 6; i++) {
     pinMode (buttons[i], INPUT_PULLUP  );
   }
-
-  //pattern_generator.Init();
-  pattern_generator.set_clock_resolution(2);
-
-
 }
 
-int count = 0;
-int bpm = 120;
-
 void loop() {
-
+  time_now = millis();
   // // Light LED
   // digitalWrite(leds[count], 1);
 
   // // Read Fader
   // int read = analogRead(faders[count]);
-
+  for (uint8_t fader = 0; fader < 8; fader++) {
+    uint8_t read = analogRead(faders[fader]);
+    grids_.RespondToFader(fader, ~read);
+  }
   // // Convert to note and send Midi
   // int note = map(read, 0, 1023, 81, 33);
 
@@ -81,16 +84,23 @@ void loop() {
   // }
 
   // // Map buttons to BPM
-  // if (!digitalRead(buttons[0])) bpm = 30;
-  // else if (!digitalRead(buttons[1])) bpm = 60;
+  if (!digitalRead(buttons[4])) { // Left button
+    bpm--;
+    msPerClock = grids_.MsPerClock(bpm);
+  }
+  else if (!digitalRead(buttons[5])) { // Right button
+    bpm++;
+    msPerClock = grids_.MsPerClock(bpm);
+  }
   // else if (!digitalRead(buttons[2])) bpm = 240;
   // else if (!digitalRead(buttons[3])) bpm = 480;
   // else bpm = 120;
-
+  grids_.NextStep();
 
   // // Delay according to BPM
-  // delay(15000 / bpm);
-
+  while(millis() < time_now + msPerClock){
+        //wait approx. [msPerClock] ms
+  }
 
   // // End note
   // myMidi.hardNoteOff(1, 36);
@@ -101,10 +111,5 @@ void loop() {
   // // Increment and return to zero when necessary
   // count++;
   // if (count >= 8) count = 0;
-
-  for (uint8_t i = 0; i < kNumParts; i++)
-  {
-    
-  }
 
 }

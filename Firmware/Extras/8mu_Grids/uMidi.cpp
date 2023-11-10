@@ -36,8 +36,8 @@ Adafruit_USBD_MIDI usb_midi;
 
 
 
-byte midi_tip = 1; // PA10
-byte midi_ring = 45; // PA08
+uint8_t midi_tip = 1; // PA10
+uint8_t midi_ring = 45; // PA08
 
 
 
@@ -67,8 +67,8 @@ Uart hardMidi (&sercom2, 3, 4, SERCOM_RX_PAD_1, UART_TX_PAD_0);
 
 #elif defined (Proto_3_2)
 
-byte midi_source = midi_tip;
-byte midi_sink = midi_ring;
+uint8_t midi_source = midi_tip;
+uint8_t midi_sink = midi_ring;
 SercomUartTXPad midi_TX_pad = UART_TX_PAD_0; // NB if source == tip then PAD = 0
 
 Uart hardMidi (&sercom2, midi_tip, midi_ring, SERCOM_RX_PAD_1, midi_TX_pad);
@@ -139,7 +139,7 @@ void uMidi::begin() {
 
 // Channel number -1 because it came out + 1
 
-void uMidi::noteOn (byte channel, byte pitch, byte velocity) {
+void uMidi::noteOn (uint8_t channel, uint8_t pitch, uint8_t velocity) {
   // Channel 0 used to turn MIDI outputs off
   if (channel < 1) return;
   int packetSize = 4;
@@ -147,36 +147,34 @@ void uMidi::noteOn (byte channel, byte pitch, byte velocity) {
   usb_midi.send(packet);
 }
 
-void uMidi::hardNoteOn(byte channel, byte pitch, byte velocity) {
+void uMidi::hardNoteOn(uint8_t channel, uint8_t pitch, uint8_t velocity) {
   // Channel 0 used to turn MIDI outputs off
   if (channel < 1) return;
-  hardMidi.write(NOTE_ON & 0xf0) | ((channel - 1) & 0x0f);
+  hardMidi.write((NOTE_ON & 0xf0) | ((channel - 1) & 0x0f));
   hardMidi.write(pitch);
   hardMidi.write(velocity);
 }
 
 
-void uMidi::noteOff (byte channel, byte pitch) {
+void uMidi::noteOff (uint8_t channel, uint8_t pitch) {
   // Channel 0 used to turn MIDI outputs off
   if (channel < 1) return;
-  byte velocity = 0;
+  uint8_t velocity = 0;
   int packetSize = 4;
   uint8_t packet[4] = {0x08, NOTE_OFF | channel - 1, pitch, velocity};
   usb_midi.send(packet);
 }
 
-void uMidi::hardNoteOff(byte channel, byte pitch) {
+void uMidi::hardNoteOff(uint8_t channel, uint8_t pitch) {
   // Channel 0 used to turn MIDI outputs off
   if (channel < 1) return;
-  byte velocity = 0;
-  hardMidi.write(NOTE_OFF & 0xf0) | ((channel - 1) & 0x0f);
+  uint8_t velocity = 0;
+  hardMidi.write((NOTE_OFF & 0xf0) | ((channel - 1) & 0x0f));
   hardMidi.write(pitch);
   hardMidi.write(velocity);
 }
 
-
-
-void uMidi::CC (byte channel, byte controller, byte level) {
+void uMidi::CC (uint8_t channel, uint8_t controller, uint8_t level) {
   // Channel 0 used to turn MIDI outputs off
   if (channel < 1) return;
   int packetSize = 4;
@@ -184,7 +182,7 @@ void uMidi::CC (byte channel, byte controller, byte level) {
   usb_midi.send(packet);
 }
 
-void uMidi::hardCC(byte channel, byte controller, byte level) {
+void uMidi::hardCC(uint8_t channel, uint8_t controller, uint8_t level) {
   // Channel 0 used to turn MIDI outputs off
   if (channel < 1) return;
   hardMidi.write(CONT_CONT & 0xf0) | ((channel - 1) & 0x0f);
@@ -221,7 +219,7 @@ void uMidi::newMessage() {
           midiBuffer[bufferLength++] = packet[i];
         }
         else {
-          D(Serial.println("*****BUFFER OVERFLOW*****"));
+          //D(Serial.println("*****BUFFER OVERFLOW*****"));
         }
       }
       if (packet[i] == 0xF0 && recievingSysex == false) {
@@ -235,71 +233,71 @@ void uMidi::newMessage() {
   }
 }
 
-void uMidi::sendSysEx(int length, byte *data) {
+// void uMidi::sendSysEx(int length, uint8_t *data) {
 
-  D(Serial.print(length));
-  D(Serial.println(" bytes of sysex to send"));
+//   D(Serial.print(length));
+//   D(Serial.println(" bytes of sysex to send"));
 
-  // send F0 sysex header + first two bytes
-  uint8_t packet[4] = {0x4, 0xF0, data[0], data[1]};
-  usb_midi.send(packet);
-  delay(1);
-  D(Serial.print("Send packet: "));
-  D(printBytesAsIntsArray(packet, 4));
-  D(Serial.println(""));
-  data += 2;
-  length -= 2;
+//   // send F0 sysex header + first two bytes
+//   uint8_t packet[4] = {0x4, 0xF0, data[0], data[1]};
+//   usb_midi.send(packet);
+//   delay(1);
+//   D(Serial.print("Send packet: "));
+//   D(printBytesAsIntsArray(packet, 4));
+//   D(Serial.println(""));
+//   data += 2;
+//   length -= 2;
 
-  // send the rest of the data
-  while (length > 2) {
-    uint8_t packet[4] = {0x4, data[0], data[1], data[2]};
-    usb_midi.send(packet);
-    delay(1);
-    D(Serial.print("Send packet: "));
-    D(printBytesAsIntsArray(packet, 4));
-    D(Serial.println(""));
-    data += 3;
-    length -= 3;
-  }
-  // send leftovers and F7 sign off
+//   // send the rest of the data
+//   while (length > 2) {
+//     uint8_t packet[4] = {0x4, data[0], data[1], data[2]};
+//     usb_midi.send(packet);
+//     delay(1);
+//     D(Serial.print("Send packet: "));
+//     D(printBytesAsIntsArray(packet, 4));
+//     D(Serial.println(""));
+//     data += 3;
+//     length -= 3;
+//   }
+//   // send leftovers and F7 sign off
 
-  switch (length) {
-    case 2:
-      { uint8_t packet[4] = {0x7, data[0], data[1], 0xF7};
-        usb_midi.send(packet);
-        D(Serial.print("Send packet: "));
-        D(printBytesAsIntsArray(packet, 4));
-        D(Serial.println(""));
-        break;
-      }
-    case 1:
-      { uint8_t packet[4] = {0x6, data[0], 0xF7, 0};
-        usb_midi.send(packet);
-        D(Serial.print("Send packet: "));
-        D(printBytesAsIntsArray(packet, 4));
-        D(Serial.println(""));
-        break;
-      }
-    case 0:
-      { uint8_t packet[4] = {0x5, 0xF7, 0, 0};
-        usb_midi.send(packet);
-        D(Serial.print("Send packet: "));
-        D(printBytesAsIntsArray(packet, 4));
-        D(Serial.println(""));
-        break;
-      }
+//   switch (length) {
+//     case 2:
+//       { uint8_t packet[4] = {0x7, data[0], data[1], 0xF7};
+//         usb_midi.send(packet);
+//         D(Serial.print("Send packet: "));
+//         D(printBytesAsIntsArray(packet, 4));
+//         D(Serial.println(""));
+//         break;
+//       }
+//     case 1:
+//       { uint8_t packet[4] = {0x6, data[0], 0xF7, 0};
+//         usb_midi.send(packet);
+//         D(Serial.print("Send packet: "));
+//         D(printBytesAsIntsArray(packet, 4));
+//         D(Serial.println(""));
+//         break;
+//       }
+//     case 0:
+//       { uint8_t packet[4] = {0x5, 0xF7, 0, 0};
+//         usb_midi.send(packet);
+//         D(Serial.print("Send packet: "));
+//         D(printBytesAsIntsArray(packet, 4));
+//         D(Serial.println(""));
+//         break;
+//       }
 
-    default: break;
-  }
+//     default: break;
+//   }
 
 
-}
+// }
 
 boolean uMidi::sysexAvailable() {
   return recievedSysex;
 }
 
-byte * uMidi::returnSysex() {
+uint8_t * uMidi::returnSysex() {
   recievedSysex = false;
   return midiBuffer;
 }
@@ -311,8 +309,8 @@ void uMidi::changeHardMidiMode(boolean _midiMode) {
 #if defined (Proto_3_2)
 
 
-  byte midi_source = _midiMode ? midi_tip : midi_ring;
-  byte midi_sink = _midiMode ? midi_ring : midi_tip;
+  uint8_t midi_source = _midiMode ? midi_tip : midi_ring;
+  uint8_t midi_sink = _midiMode ? midi_ring : midi_tip;
   SercomUartTXPad midi_TX_pad = _midiMode ? UART_TX_PAD_0 : UART_TX_PAD_2;
   hardMidi.end();
   Uart hardMidi (&sercom2, midi_tip, midi_ring, SERCOM_RX_PAD_1, midi_TX_pad);
