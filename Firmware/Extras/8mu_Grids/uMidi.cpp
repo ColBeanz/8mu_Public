@@ -174,6 +174,10 @@ void uMidi::hardNoteOff(uint8_t channel, uint8_t pitch) {
   hardMidi.write(velocity);
 }
 
+void uMidi::hardClock() {
+  hardMidi.write(CLOCK);
+}
+
 void uMidi::CC (uint8_t channel, uint8_t controller, uint8_t level) {
   // Channel 0 used to turn MIDI outputs off
   if (channel < 1) return;

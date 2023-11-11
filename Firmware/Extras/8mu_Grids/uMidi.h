@@ -30,6 +30,7 @@ const uint8_t NOTE_ON = 0x90;
 const uint8_t CONT_CONT = 0xB0;
 const uint8_t SYSEX = 0xF0;
 const uint8_t SYSEX_END = 0xF7;
+const uint8_t CLOCK = 0xF8;
 
 class uMidi
 {
@@ -47,6 +48,7 @@ class uMidi
     void hardNoteOn(uint8_t channel, uint8_t note, uint8_t velocity);
     void noteOff(uint8_t channel, uint8_t note);
     void hardNoteOff(uint8_t channel, uint8_t note);
+    void hardClock();
     void CC(uint8_t channel, uint8_t controller, uint8_t level);
     void hardCC(uint8_t channel, uint8_t controller, uint8_t level);
     void changeHardMidiMode(bool _midiMode);

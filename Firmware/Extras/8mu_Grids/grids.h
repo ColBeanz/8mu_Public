@@ -26,6 +26,7 @@ class Grids {
 
     private:
         static void trigger_midi();
+        static void advance_midi_clock();
         static void trigger_note(uint8_t channel, uint8_t note, uint8_t vel);
         static void led_on(uint8_t ledNumber);
         static void led_off(uint8_t ledNumber);

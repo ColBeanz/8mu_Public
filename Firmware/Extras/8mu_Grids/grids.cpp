@@ -33,6 +33,7 @@ void Grids::NextStep() {
     //     step -= kPulsesPerStep;
     // }
     trigger_midi();
+    advance_midi_clock();
 }
 
 void Grids::RespondToFader(uint8_t fader, uint8_t value) {
@@ -81,6 +82,10 @@ void Grids::trigger_midi() {
     trigger_note(1, 60, part1Level);
     trigger_note(2, 60, part2Level);
     trigger_note(3, 60, part3Level);
+}
+
+void Grids::advance_midi_clock() {
+    myMidi.hardClock();
 }
 
 void Grids::trigger_note(uint8_t channel, uint8_t note, uint8_t vel) {
