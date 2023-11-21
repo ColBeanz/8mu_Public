@@ -67,8 +67,9 @@ void loop() {
   // // Read Fader
   // int read = analogRead(faders[count]);
   for (uint8_t fader = 0; fader < 8; fader++) {
-    uint8_t read = analogRead(faders[fader]);
-    grids_.RespondToFader(fader, ~read);
+    int read = analogRead(faders[fader]);
+    uint8_t x = map(read, 0, 1023, 255, 0);
+    grids_.RespondToFader(fader, x);
   }
   // // Convert to note and send Midi
   // int note = map(read, 0, 1023, 81, 33);
