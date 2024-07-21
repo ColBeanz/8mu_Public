@@ -85,15 +85,15 @@ void loop() {
   // }
 
   // // Map buttons to BPM
-  if (!digitalRead(buttons[4])) { // Left button
+  if (!digitalRead(buttons[4])) { // Left side button
     bpm--;
     msPerClock = grids_.MsPerClock(bpm);
   }
-  else if (!digitalRead(buttons[5])) { // Right button
+  else if (!digitalRead(buttons[5])) { // Right side button
     bpm++;
     msPerClock = grids_.MsPerClock(bpm);
   }
-  else if (!digitalRead(buttons[3])) {
+  else if (!digitalRead(buttons[3])) { // top right button
     grids_.ToggleMode();
   }
   // else if (!digitalRead(buttons[3])) bpm = 480;
