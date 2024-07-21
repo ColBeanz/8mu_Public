@@ -74,6 +74,11 @@ uint8_t Grids::MsPerClock(uint8_t bpm) {
     return MS_PER_MIN / (CLOCK_RATE * bpm);
 }
 
+void Grids::ToggleMode() {
+    uint8_t outputMode = pattern_generator.output_mode();
+    pattern_generator.set_output_mode(~outputMode);
+}
+
 void Grids::trigger_midi() {
     uint8_t part1Level = pattern_generator.part_level(0) >> 1; // scale it to midi velocity
     uint8_t part2Level = pattern_generator.part_level(1) >> 1;

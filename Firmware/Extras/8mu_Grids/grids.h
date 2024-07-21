@@ -23,6 +23,7 @@ class Grids {
         static void NextStep();
         static void RespondToFader(uint8_t fader, uint8_t value);
         static uint8_t MsPerClock(uint8_t bpm);
+        static void ToggleMode();
 
     private:
         static void trigger_midi();

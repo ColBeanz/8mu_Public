@@ -93,7 +93,9 @@ void loop() {
     bpm++;
     msPerClock = grids_.MsPerClock(bpm);
   }
-  // else if (!digitalRead(buttons[2])) bpm = 240;
+  else if (!digitalRead(buttons[3])) {
+    grids_.ToggleMode();
+  }
   // else if (!digitalRead(buttons[3])) bpm = 480;
   // else bpm = 120;
   grids_.NextStep();
