@@ -76,7 +76,11 @@ uint8_t Grids::MsPerClock(uint8_t bpm) {
 
 void Grids::ToggleMode() {
     uint8_t outputMode = pattern_generator.output_mode();
-    pattern_generator.set_output_mode(~outputMode);
+    if (outputMode) {
+        pattern_generator.set_output_mode(OUTPUT_MODE_EUCLIDEAN);
+    } else {
+        pattern_generator.set_output_mode(OUTPUT_MODE_DRUMS);
+    }
 }
 
 void Grids::trigger_midi() {
