@@ -25,5 +25,7 @@ compiler.arm.cmsis.c.flags="-I{runtime.tools.CMSIS-4.5.0.path}/CMSIS/Include/" "
 compiler.arm.cmsis.ldflags="-L{runtime.tools.CMSIS-4.5.0.path}/CMSIS/Lib/GCC/" -larm_cortexM0l_math
 ```
 
+To build the thing, in Arduino IDE, click Sketch->Verify/Compile, then Sketch->Export Compiled Binary to generate the .bin
+
 To update the device, I found a github repo with a python program to generate the uf2 file [here](https://github.com/microsoft/uf2)
 Running the command -> `python3 uf2conv.py -f 0x68ed2b88 -b 0x2000 '/Users/colin/git/8mu_Public/Firmware/Extras/8mu_Grids/build/music thing.samd.musicthing_musicthing_m0_plus/8MU_Grids.ino.bin' -o 8mu_Grids.uf2` to send the built file to the device.
